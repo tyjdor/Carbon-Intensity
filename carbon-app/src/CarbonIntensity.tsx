@@ -1,23 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "./Context";
-
+import "./CarbonIntensity.css"; // Import CSS file
+import RegionDropdown from "./RegionDropdown";
 const CarbonIntensity = () => {
   const [intensityForecast, setIntensityForecast] = useState<number | null>(
     null
   );
   const [carbonIntensity, setCarbonIntensity] = useState<number | null>(null);
   const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
-  const [regionalData, setRegionalData] = useState<any | null>(null);
   const [pastData, setPastData] = useState<any | null>(null);
   const [pastMonthData, setPastMonthData] = useState<any | null>(null);
-  const [regionSelectList, setRegionSelectList] = useState<
-    { id: number; name: string }[]
-  >([]);
+
   const [selectedRegionData, setSelectedRegionData] = useState<any | null>(
     null
   );
-  const { setRegion } = useContext(Context);
+  const { setRegion, setRegionalData, regionalData } = useContext(Context);
 
   useEffect(() => {
     const fetchCarbonIntensity = async () => {
@@ -186,17 +184,8 @@ const CarbonIntensity = () => {
     fetchCarbonIntensity();
   }, []);
 
-  useEffect(() => {
-    if (regionalData != null && regionalData.data[0] != null) {
-      setRegionSelectList(
-        regionalData.data[0].regions.map((r: any) => ({
-          id: r.regionid,
-          name: r.shortname,
-        }))
-      );
-    }
-  }, [regionalData]);
   const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(handleRegionChange);
     const selectedRegionId = parseInt(event.target.value);
     setSelectedRegionId(selectedRegionId);
   };
@@ -209,13 +198,16 @@ const CarbonIntensity = () => {
       );
     }
   }, [selectedRegionId]);
-  useEffect(() => {
-    setRegion(selectedRegionData);
-  }, [selectedRegionData]);
+  // useEffect(() => {
+  //   setRegion(selectedRegionData);
+  // }, [selectedRegionData]);
   return (
     <>
-      <div style={{ display: "flex" }}>
-        <div style={{ flex: "1 1 50%", paddingRight: "10px" }}>
+      <div className="container">
+        <div
+          className="content"
+          style={{ flex: "1 1 50%", paddingRight: "10px" }}
+        >
           <h1>Today's Carbon Intensity Forecast</h1>
           <p>Forecast for UK: {intensityForecast} gCO2/kWh</p>
           <div>
@@ -240,17 +232,17 @@ const CarbonIntensity = () => {
             </table>
           </div>
           <h2>Select a region:</h2>
-
-          <select value={selectedRegionId || ""} onChange={handleRegionChange}>
+          <RegionDropdown onChange={handleRegionChange}></RegionDropdown>
+          {/* <select value={selectedRegionId || ""} onChange={handleRegionChange}>
             <option value="">Choose Region</option>
             {regionSelectList?.map((r) => (
               <option key={r.id} value={r.id}>
                 {r.name}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
-        <div style={{ flex: "1 1 50%" }}>
+        <div className="content" style={{ flex: "1 1 50%" }}>
           {selectedRegionData && (
             <div>
               <h2>Regional Data</h2>
