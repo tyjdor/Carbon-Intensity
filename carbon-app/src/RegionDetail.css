@@ -1,0 +1,86 @@
+/* RegionDetail.css */
+body {
+    background-color: #f0f7ff; /* Nice blue background */
+}
+
+.region-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff; /* White background for the container */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+}
+
+.region-detail-container h2 {
+    color: #333;
+}
+
+.region-detail-container h3 {
+    color: #555;
+}
+
+.region-detail-container p {
+    margin-bottom: 10px;
+}
+
+.region-detail-container ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.region-detail-container li {
+    margin-bottom: 5px;
+}
+
+.region-detail-container .date-container {
+    margin-bottom: 20px;
+}
+
+.region-detail-container .date-picker {
+    margin-right: 10px;
+}
+
+.region-detail-container .intensity-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.region-detail-container .intensity-list table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+.region-detail-container .intensity-list th,
+.region-detail-container .intensity-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.region-detail-container .intensity-list th {
+    background-color: #f2f2f2;
+}
+
+.daily-intensities {
+    margin-top: 20px;
+    overflow: auto; /* Enable scrolling for overflow */
+}
+
+.daily-intensities table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+.daily-intensities th,
+.daily-intensities td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.daily-intensities th {
+    background-color: #f2f2f2;
+}
