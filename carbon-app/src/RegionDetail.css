@@ -7,6 +7,7 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    text-align: center;
     background-color: #fff; /* White background for the container */
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
@@ -14,6 +15,7 @@ body {
 
 .region-detail-container h2 {
     color: #333;
+    text-align: center; /* Center the header */
 }
 
 .region-detail-container h3 {
@@ -68,19 +70,22 @@ body {
     overflow: auto; /* Enable scrolling for overflow */
 }
 
-.daily-intensities table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
+/* Positioning "Regional Data" and "Generation Mix" next to each other */
+.region-detail-container .data-heading {
+    display: flex;
+    justify-content: space-between;
 }
 
-.daily-intensities th,
-.daily-intensities td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+.region-detail-container .regional-data,
+.generation-mix {
+    
+    margin: 0 auto;
+    text-align: center;
+    width: calc(50% - 5px); /* Adjust width as needed */
 }
-
-.daily-intensities th {
-    background-color: #f2f2f2;
-}
+.dropdown{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+  }
