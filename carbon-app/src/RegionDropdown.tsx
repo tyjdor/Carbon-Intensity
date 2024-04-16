@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "./Context";
+import "./RegionDropdown.css";
 
 const RegionDropdown: FC<{
   onChange: ChangeEventHandler<HTMLSelectElement>;
@@ -37,14 +38,16 @@ const RegionDropdown: FC<{
   };
   return (
     <>
-      <select onChange={changeWrapper}>
-        <option value="">Choose Region</option>
-        {regionSelectList?.map((r) => (
-          <option key={r.id} value={r.id}>
-            {r.name}
-          </option>
-        ))}
-      </select>
+      <label className="select">
+        <select onChange={changeWrapper}>
+          <option value="">Choose Region</option>
+          {regionSelectList?.map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.name}
+            </option>
+          ))}
+        </select>
+      </label>
     </>
   );
 };
