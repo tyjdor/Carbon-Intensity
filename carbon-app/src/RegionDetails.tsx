@@ -6,7 +6,6 @@ import { Context } from "./Context";
 import RegionDropdown from "./RegionDropdown";
 import { getRegionalIntensityTimeRange } from "./Api";
 import "./RegionDetail.css"; // Import the CSS file
-import RegionDataTable from "./RegionDataTable";
 
 const RegionDetails = () => {
   let { id } = useParams();
@@ -61,17 +60,43 @@ const RegionDetails = () => {
   const renderDailyIntensities = () => {
     const dailyIntensities = calculateDailyIntensities();
     if (!dailyIntensities) return null;
-    return Object.entries(dailyIntensities).map(
-      ([date, intensities], index) => (
-        <div key={index}>
-          <p>{date}:</p>
-          <ul>
-            {intensities.map((intensity, subIndex) => (
-              <li key={subIndex}>{intensity} gCO2/kWh</li>
-            ))}
-          </ul>
-        </div>
-      )
+    return (
+      //Object.entries(dailyIntensities).map(
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Intensity (gCO2/kWh) </th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(dailyIntensities).map(
+            ([date, intensities], index) => (
+              <tr key={index}>
+                <td>{date}</td>
+                <td>
+                  <ul>
+                    {intensities.map((intensity, subIndex) => (
+                      <li key={subIndex}>{intensity}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            )
+          )}
+        </tbody>
+      </table>
+
+      //   ([date, intensities], index) => (
+      //     <div key={index}>
+      //       <p>{date}:</p>
+      //       <ul>
+      //         {intensities.map((intensity, subIndex) => (
+      //           <li key={subIndex}>{intensity} gCO2/kWh</li>
+      //         ))}
+      //       </ul>
+      //     </div>
+      // )
     );
   };
 
@@ -81,19 +106,25 @@ const RegionDetails = () => {
     <div className="region-detail-container">
       <Link to={`/`}>Home</Link>
       <p>{region.shortname}</p>
+
       <h2>Regional Data</h2>
       <p>Forecast: {region?.intensity.forecast} gCO2/kWh</p>
       <p>Forecast: {region?.intensity.index}</p>
-      <h3>Generation Mix:</h3>
-      <ul>
-        {region?.generationmix?.map((fuel: any, index: number) => (
-          <li key={index}>
-            {fuel.fuel}: {fuel.perc}%
-          </li>
-        ))}
-      </ul>
+
+      <div>
+        <h3 className="generation-mix">Generation Mix:</h3>
+        <ul>
+          {region?.generationmix?.map((fuel: any, index: number) => (
+            <li key={index}>
+              {fuel.fuel}: {fuel.perc}%
+            </li>
+          ))}
+        </ul>
+      </div>
       <div className="date-container">
-        <RegionDropdown onChange={(e: any) => goToRegion(e.target.value)} />
+        <div className="dropdown">
+          <RegionDropdown onChange={(e: any) => goToRegion(e.target.value)} />
+        </div>
         <DatePicker
           className="date-picker"
           selected={startDate}
@@ -106,12 +137,16 @@ const RegionDetails = () => {
         />
       </div>
       {/* <RegionDataTable data={overallIntensity}/> */}
+
       <p className="overall-intensity">
         Overall Carbon Intensity for the selected time range:{" "}
         {calculateOverallIntensity()} gCO2/kWh
       </p>
+
       <h3 className="daily-intensities">Daily Carbon Intensity</h3>
-      <div className="">{renderDailyIntensities()}</div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="">{renderDailyIntensities()}</div>
+      </div>
     </div>
   );
 };
