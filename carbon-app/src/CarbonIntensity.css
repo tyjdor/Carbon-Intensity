@@ -1,0 +1,70 @@
+/* Define colors */
+:root {
+    --primary-color: #3498db; /* Blue */
+    --secondary-color: #2ecc71; /* Green */
+    --text-color: #333; /* Dark Gray */
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Use a nice font */
+    background-color: #f5f5f5; /* Light Gray */
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .content {
+    width: 90%;
+    max-width: 800px;
+    background-color: #fff; /* White */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  }
+  
+  .table-container {
+    margin-top: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc; /* Light Gray */
+  }
+  
+  th,
+  td {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  ul {
+    padding-left: 0; /* Remove default padding */
+    list-style-type: none;
+  }
+  
+  /* Style links */
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
