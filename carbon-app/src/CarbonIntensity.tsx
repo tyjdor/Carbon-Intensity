@@ -10,6 +10,7 @@ const CarbonIntensity = () => {
   const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
   const [regionalData, setRegionalData] = useState<any | null>(null);
   const [pastData, setPastData] = useState<any | null>(null);
+  const [pastMonthData, setPastMonthData] = useState<any | null>(null);
   const [regionSelectList, setRegionSelectList] = useState<
     { id: number; name: string }[]
   >([]);
@@ -18,8 +19,6 @@ const CarbonIntensity = () => {
   );
   const { setRegion } = useContext(Context);
 
-  // console.log(regionalData);
-  // console.log(regionSelectList);
   useEffect(() => {
     const fetchCarbonIntensity = async () => {
       try {
@@ -31,7 +30,7 @@ const CarbonIntensity = () => {
           throw new Error("Failed to fetch carbon intensity");
         }
         const data = await response.json();
-        // console.log(data);
+
         setRegionalData(data);
       } catch (error) {
         console.error("Error fetching carbon intensity:", error);
@@ -50,13 +49,6 @@ const CarbonIntensity = () => {
             pastDate.toISOString().substring(0, 16) + "Z";
           const formattedCurrentDate =
             currentDate.toISOString().substring(0, 16) + "Z";
-          console.log(formattedPastDate);
-          //YYYY-MM-DDThh:mmZ e.g. 2017-08-25T12:35Z
-          //https://api.carbonintensity.org.uk/regional/intensity/2024-04-16/2024-04-09/regionid/3
-          //https://api.carbonintensity.org.uk/regional/intensity/2024-04-16T01:10:01.419Z/2024-04-09T01:10:01.419Z/regionid/6
-          //https://api.carbonintensity.org.uk/regional/intensity/2024-04-16T01:15:15.104Z/2024-04-09T01:15Z/regionid/9
-          //https://api.carbonintensity.org.uk/regional/intensity/2024-04-16T01:16Z/2024-04-09T01:16Z/regionid/6
-          //                                                                        2017-08-25T12:35Z
 
           const response = await fetch(
             `https://api.carbonintensity.org.uk/regional/intensity/${formattedPastDate}/${formattedCurrentDate}/regionid/${selectedRegionId}`
@@ -65,8 +57,8 @@ const CarbonIntensity = () => {
             throw new Error(`Failed to fetch past weeks carbon intensity data`);
           }
           const data = await response.json();
-          setPastData(pastData);
-          console.log(pastDate);
+          setPastData(data);
+
           return data.data[0]?.intensity.forecast;
         } catch (error) {
           console.error(
@@ -79,7 +71,98 @@ const CarbonIntensity = () => {
     };
     fetchPastWeekData();
   }, [selectedRegionId]);
+  const renderPastDataByHour = () => {
+    if (!pastData || !pastData.data.data) return null;
+    return pastData.data.data.map((entry: any, index: number) => (
+      <tr key={index}>
+        <td>
+          {new Date(entry.from).toLocaleDateString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </td>
+        <td>{entry.intensity.forecast}gCO2/kWh</td>
+      </tr>
+    ));
+  };
+  useEffect(() => {
+    const fetchPastMonthData = async () => {
+      if (selectedRegionId != null) {
+        try {
+          const currentDate = new Date(Date.now());
+          const pastDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // Subtract 30 days worth of milliseconds
+          const formattedPastDate =
+            pastDate.toISOString().substring(0, 16) + "Z";
+          const formattedCurrentDate =
+            currentDate.toISOString().substring(0, 16) + "Z";
 
+          const response = await fetch(
+            `https://api.carbonintensity.org.uk/regional/intensity/${formattedPastDate}/${formattedCurrentDate}/regionid/${selectedRegionId}`
+          );
+          if (!response.ok) {
+            throw new Error(`Failed to fetch past weeks carbon intensity data`);
+          }
+          const data = await response.json();
+          setPastMonthData(data);
+
+          return data.data[0]?.intensity.forecast;
+        } catch (error) {
+          console.error(
+            "error fetching past weeks carbon intensity data:",
+            error
+          );
+          return null;
+        }
+      }
+    };
+    fetchPastMonthData();
+  }, [selectedRegionId]);
+  useEffect(() => {
+    const fetchPastWeekData = async () => {
+      if (selectedRegionId != null) {
+        try {
+          const currentDate = new Date(Date.now());
+          const pastDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // Subtract 7 days worth of milliseconds
+          const formattedPastDate =
+            pastDate.toISOString().substring(0, 16) + "Z";
+          const formattedCurrentDate =
+            currentDate.toISOString().substring(0, 16) + "Z";
+
+          const response = await fetch(
+            `https://api.carbonintensity.org.uk/regional/intensity/${formattedPastDate}/${formattedCurrentDate}/regionid/${selectedRegionId}`
+          );
+          if (!response.ok) {
+            throw new Error(`Failed to fetch past weeks carbon intensity data`);
+          }
+          const data = await response.json();
+          setPastData(data);
+
+          return data.data[0]?.intensity.forecast;
+        } catch (error) {
+          console.error(
+            "error fetching past weeks carbon intensity data:",
+            error
+          );
+          return null;
+        }
+      }
+    };
+    fetchPastWeekData();
+  }, [selectedRegionId]);
+  const renderPastMonthByHour = () => {
+    if (!pastMonthData || !pastMonthData.data.data) return null;
+    return pastMonthData.data.data.map((entry: any, index: number) => (
+      <tr key={index}>
+        <td>
+          {new Date(entry.from).toLocaleDateString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </td>
+        <td>{entry.intensity.forecast}gCO2/kWh</td>
+      </tr>
+    ));
+  };
   useEffect(() => {
     const fetchCarbonIntensity = async () => {
       try {
@@ -104,7 +187,6 @@ const CarbonIntensity = () => {
   }, []);
 
   useEffect(() => {
-    // console.log(regionalData);
     if (regionalData != null && regionalData.data[0] != null) {
       setRegionSelectList(
         regionalData.data[0].regions.map((r: any) => ({
@@ -183,13 +265,40 @@ const CarbonIntensity = () => {
                   )
                 )}
               </ul>
-              <h3>
-                Past Week Intensity:
-                {pastData?.data.data[0].intenstity.forecast} gCO2/kWh
-              </h3>
-              <h3>
-                Past Month Intensity: {selectedRegionData.pastMonth} gCO2/kWh
-              </h3>
+              <h3>Past Week Intensity:</h3>
+              <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+                <table
+                  style={{
+                    borderCollapse: "collapse",
+                    border: "1px solid black",
+                  }}
+                >
+                  <thead>
+                    <tr>
+                      <th>time</th>
+                      <th>Forecast Intensity</th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderPastDataByHour()}</tbody>
+                </table>
+              </div>
+              <h3>Past Month Intensity:</h3>
+              <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+                <table
+                  style={{
+                    borderCollapse: "collapse",
+                    border: "1px solid black",
+                  }}
+                >
+                  <thead>
+                    <tr>
+                      <th>time</th>
+                      <th>Forecast Intensity</th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderPastMonthByHour()}</tbody>
+                </table>
+              </div>
 
               <Link to={`/region/${selectedRegionId}`}>go to region</Link>
             </div>
