@@ -38,7 +38,13 @@ const RegionDataTable: FC<{
           {data != null ? (
             <tbody>{renderPastDataByHour()}</tbody>
           ) : (
-            <div className="loader" />
+            <tbody>
+              <tr>
+                <td>
+                  <div className="loader" />
+                </td>
+              </tr>
+            </tbody>
           )}
         </table>
       </div>
