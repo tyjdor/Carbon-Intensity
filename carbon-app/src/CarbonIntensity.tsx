@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Context } from "./Context";
 import "./CarbonIntensity.css"; // Import CSS file
 import RegionDropdown from "./RegionDropdown";
+import { getRegionalIntensityTimeRange } from "./Api";
 const CarbonIntensity = () => {
   const [intensityForecast, setIntensityForecast] = useState<number | null>(
     null
@@ -118,31 +119,14 @@ const CarbonIntensity = () => {
   useEffect(() => {
     const fetchPastWeekData = async () => {
       if (selectedRegionId != null) {
-        try {
-          const currentDate = new Date(Date.now());
-          const pastDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // Subtract 7 days worth of milliseconds
-          const formattedPastDate =
-            pastDate.toISOString().substring(0, 16) + "Z";
-          const formattedCurrentDate =
-            currentDate.toISOString().substring(0, 16) + "Z";
-
-          const response = await fetch(
-            `https://api.carbonintensity.org.uk/regional/intensity/${formattedPastDate}/${formattedCurrentDate}/regionid/${selectedRegionId}`
-          );
-          if (!response.ok) {
-            throw new Error(`Failed to fetch past weeks carbon intensity data`);
-          }
-          const data = await response.json();
-          setPastData(data);
-
-          return data.data[0]?.intensity.forecast;
-        } catch (error) {
-          console.error(
-            "error fetching past weeks carbon intensity data:",
-            error
-          );
-          return null;
-        }
+        const currentDate = new Date(Date.now());
+        const pastDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // Subtract 7 days worth of milliseconds
+        const data = await getRegionalIntensityTimeRange(
+          selectedRegionId,
+          pastDate,
+          currentDate
+        );
+        setPastData(data);
       }
     };
     fetchPastWeekData();
@@ -185,7 +169,6 @@ const CarbonIntensity = () => {
   }, []);
 
   const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(handleRegionChange);
     const selectedRegionId = parseInt(event.target.value);
     setSelectedRegionId(selectedRegionId);
   };
