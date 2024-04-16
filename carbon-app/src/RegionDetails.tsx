@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "./Context";
+import RegionDropdown from "./RegionDropdown";
 
 const RegionDetails = () => {
   let { id } = useParams();
-  const { region } = useContext(Context);
+  const { region, regionalData } = useContext(Context);
 
+  const navigate = useNavigate();
+  const goToRegion = (id: number) => navigate(`/region/${id}`);
   return (
     <>
-      <div>ID: {id}</div>
       <p>{region.shortname}</p>
       <h2>Regional Data</h2>
       <p>Forecast: {region?.intensity.forecast} gCO2/kWh</p>
@@ -21,6 +23,9 @@ const RegionDetails = () => {
           </li>
         ))}
       </ul>
+      <RegionDropdown
+        onChange={(e: any) => goToRegion(e.target.value)}
+      ></RegionDropdown>
     </>
   );
 };
