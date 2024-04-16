@@ -177,7 +177,7 @@ const CarbonIntensity = () => {
 
   return (
     <>
-      <div className={`container ${selectedRegionData ? "show-panel" : ""}`}>
+      <div className={`container ${selectedRegionData}`}>
         <div
           className="content"
           style={{ flex: "1 1 50%", paddingRight: "10px" }}
@@ -205,8 +205,10 @@ const CarbonIntensity = () => {
               </tbody>
             </table>
           </div>
-          <h2>Select a region:</h2>
-          <RegionDropdown onChange={handleRegionChange}></RegionDropdown>
+          <div className="dropdown">
+            <h2>Select a region:</h2>
+            <RegionDropdown onChange={handleRegionChange}></RegionDropdown>
+          </div>
         </div>
         {selectedRegionData && (
           <div className="content">
@@ -223,14 +225,15 @@ const CarbonIntensity = () => {
                   )
                 )}
               </ul>
-              <h3>Past Week Intensity:</h3>
+              <div className="inline-headings-container">
+                <h3>Past Week Intensity:</h3>
+                <h3>Past Month Intensity:</h3>
+              </div>
+              <div className="side-panel">
+                <RegionDataTable data={pastData} />
 
-              <RegionDataTable data={pastData} />
-
-              <h3>Past Month Intensity:</h3>
-
-              <RegionDataTable data={pastMonthData} />
-
+                <RegionDataTable data={pastMonthData} />
+              </div>
               <Link to={`/region/${selectedRegionId}`}>go to region</Link>
             </div>
           </div>
