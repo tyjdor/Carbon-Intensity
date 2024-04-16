@@ -4,6 +4,8 @@ import { Context } from "./Context";
 import "./CarbonIntensity.css"; // Import CSS file
 import RegionDropdown from "./RegionDropdown";
 import { getRegionalIntensityTimeRange } from "./Api";
+import RegionDataTable from "./RegionDataTable";
+
 const CarbonIntensity = () => {
   const [intensityForecast, setIntensityForecast] = useState<number | null>(
     null
@@ -12,7 +14,6 @@ const CarbonIntensity = () => {
   const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
   const [pastData, setPastData] = useState<any | null>(null);
   const [pastMonthData, setPastMonthData] = useState<any | null>(null);
-
   const [selectedRegionData, setSelectedRegionData] = useState<any | null>(
     null
   );
@@ -38,6 +39,7 @@ const CarbonIntensity = () => {
 
     fetchCarbonIntensity();
   }, []);
+
   useEffect(() => {
     const fetchPastWeekData = async () => {
       if (selectedRegionId != null) {
@@ -48,7 +50,7 @@ const CarbonIntensity = () => {
             pastDate.toISOString().substring(0, 16) + "Z";
           const formattedCurrentDate =
             currentDate.toISOString().substring(0, 16) + "Z";
-
+          setPastData(null);
           const response = await fetch(
             `https://api.carbonintensity.org.uk/regional/intensity/${formattedPastDate}/${formattedCurrentDate}/regionid/${selectedRegionId}`
           );
@@ -70,6 +72,7 @@ const CarbonIntensity = () => {
     };
     fetchPastWeekData();
   }, [selectedRegionId]);
+
   const renderPastDataByHour = () => {
     if (!pastData || !pastData.data.data) return null;
     return pastData.data.data.map((entry: any, index: number) => (
@@ -84,6 +87,7 @@ const CarbonIntensity = () => {
       </tr>
     ));
   };
+
   useEffect(() => {
     const fetchPastMonthData = async () => {
       if (selectedRegionId != null) {
@@ -94,7 +98,7 @@ const CarbonIntensity = () => {
             pastDate.toISOString().substring(0, 16) + "Z";
           const formattedCurrentDate =
             currentDate.toISOString().substring(0, 16) + "Z";
-
+          setPastMonthData(null);
           const response = await fetch(
             `https://api.carbonintensity.org.uk/regional/intensity/${formattedPastDate}/${formattedCurrentDate}/regionid/${selectedRegionId}`
           );
@@ -116,6 +120,7 @@ const CarbonIntensity = () => {
     };
     fetchPastMonthData();
   }, [selectedRegionId]);
+
   useEffect(() => {
     const fetchPastWeekData = async () => {
       if (selectedRegionId != null) {
@@ -131,20 +136,7 @@ const CarbonIntensity = () => {
     };
     fetchPastWeekData();
   }, [selectedRegionId]);
-  const renderPastMonthByHour = () => {
-    if (!pastMonthData || !pastMonthData.data.data) return null;
-    return pastMonthData.data.data.map((entry: any, index: number) => (
-      <tr key={index}>
-        <td>
-          {new Date(entry.from).toLocaleDateString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </td>
-        <td>{entry.intensity.forecast}gCO2/kWh</td>
-      </tr>
-    ));
-  };
+
   useEffect(() => {
     const fetchCarbonIntensity = async () => {
       try {
@@ -172,6 +164,7 @@ const CarbonIntensity = () => {
     const selectedRegionId = parseInt(event.target.value);
     setSelectedRegionId(selectedRegionId);
   };
+
   useEffect(() => {
     if (regionalData) {
       setSelectedRegionData(
@@ -181,12 +174,10 @@ const CarbonIntensity = () => {
       );
     }
   }, [selectedRegionId]);
-  // useEffect(() => {
-  //   setRegion(selectedRegionData);
-  // }, [selectedRegionData]);
+
   return (
     <>
-      <div className="container">
+      <div className={`container ${selectedRegionData ? "show-panel" : ""}`}>
         <div
           className="content"
           style={{ flex: "1 1 50%", paddingRight: "10px" }}
@@ -216,17 +207,9 @@ const CarbonIntensity = () => {
           </div>
           <h2>Select a region:</h2>
           <RegionDropdown onChange={handleRegionChange}></RegionDropdown>
-          {/* <select value={selectedRegionId || ""} onChange={handleRegionChange}>
-            <option value="">Choose Region</option>
-            {regionSelectList?.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
-            ))}
-          </select> */}
         </div>
-        <div className="content" style={{ flex: "1 1 50%" }}>
-          {selectedRegionData && (
+        {selectedRegionData && (
+          <div className="content">
             <div>
               <h2>Regional Data</h2>
               <p>Forecast: {selectedRegionData?.intensity.forecast} gCO2/kWh</p>
@@ -241,44 +224,17 @@ const CarbonIntensity = () => {
                 )}
               </ul>
               <h3>Past Week Intensity:</h3>
-              <div style={{ maxHeight: "200px", overflowY: "auto" }}>
-                <table
-                  style={{
-                    borderCollapse: "collapse",
-                    border: "1px solid black",
-                  }}
-                >
-                  <thead>
-                    <tr>
-                      <th>time</th>
-                      <th>Forecast Intensity</th>
-                    </tr>
-                  </thead>
-                  <tbody>{renderPastDataByHour()}</tbody>
-                </table>
-              </div>
+
+              <RegionDataTable data={pastData} />
+
               <h3>Past Month Intensity:</h3>
-              <div style={{ maxHeight: "200px", overflowY: "auto" }}>
-                <table
-                  style={{
-                    borderCollapse: "collapse",
-                    border: "1px solid black",
-                  }}
-                >
-                  <thead>
-                    <tr>
-                      <th>time</th>
-                      <th>Forecast Intensity</th>
-                    </tr>
-                  </thead>
-                  <tbody>{renderPastMonthByHour()}</tbody>
-                </table>
-              </div>
+
+              <RegionDataTable data={pastMonthData} />
 
               <Link to={`/region/${selectedRegionId}`}>go to region</Link>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </>
   );
