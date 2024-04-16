@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Context } from "./Context";
 import RegionDropdown from "./RegionDropdown";
 import { getRegionalIntensityTimeRange } from "./Api";
+import "./RegionDetail.css"; // Import the CSS file
+import RegionDataTable from "./RegionDataTable";
 
 const RegionDetails = () => {
   let { id } = useParams();
   const { region, regionalData } = useContext(Context);
+  const [showDailyIntensities, setShowDailyIntensities] = useState(false);
   const [startDate, setStartDate] = useState(
     new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
   );
@@ -31,10 +34,12 @@ const RegionDetails = () => {
   // Function to calculate overall carbon intensity for the selected time range
   const calculateOverallIntensity = () => {
     if (!pastData || !pastData.data.data) return null;
-    const overallIntensity = pastData.data.data.reduce(
-      (acc: number, entry: any) => acc + entry.intensity.forecast,
-      0
-    );
+    const overallIntensity =
+      pastData.data.data.reduce(
+        (acc: number, entry: any) => acc + entry.intensity.forecast,
+        0
+      ) / pastData.data.data.length;
+    console.log(pastData);
     return overallIntensity.toFixed(2);
   };
 
@@ -73,7 +78,8 @@ const RegionDetails = () => {
   const navigate = useNavigate();
   const goToRegion = (id: number) => navigate(`/region/${id}`);
   return (
-    <>
+    <div className="region-detail-container">
+      <Link to={`/`}>Home</Link>
       <p>{region.shortname}</p>
       <h2>Regional Data</h2>
       <p>Forecast: {region?.intensity.forecast} gCO2/kWh</p>
@@ -86,37 +92,27 @@ const RegionDetails = () => {
           </li>
         ))}
       </ul>
-      <RegionDropdown
-        onChange={(e: any) => goToRegion(e.target.value)}
-      ></RegionDropdown>
-      <DatePicker
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
-      />
-      <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
-      {/* <div style={{ maxHeight: "200px", overflowY: "auto" }}>
-        <table
-          style={{
-            borderCollapse: "collapse",
-            border: "1px solid black",
-          }}
-        >
-          <thead>
-            <tr>
-              <th>Time</th>
-              <th>Forecast Intensity</th>
-            </tr>
-          </thead>
-          <tbody>{renderPastData()}</tbody>
-        </table>
-      </div> */}
-      <p>
+      <div className="date-container">
+        <RegionDropdown onChange={(e: any) => goToRegion(e.target.value)} />
+        <DatePicker
+          className="date-picker"
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+        />
+        <DatePicker
+          className="date-picker"
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
+        />
+      </div>
+      {/* <RegionDataTable data={overallIntensity}/> */}
+      <p className="overall-intensity">
         Overall Carbon Intensity for the selected time range:{" "}
         {calculateOverallIntensity()} gCO2/kWh
       </p>
-      <h3>Daily Carbon Intensity</h3>
-      {renderDailyIntensities()}
-    </>
+      <h3 className="daily-intensities">Daily Carbon Intensity</h3>
+      <div className="">{renderDailyIntensities()}</div>
+    </div>
   );
 };
 
