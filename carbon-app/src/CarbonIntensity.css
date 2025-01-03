@@ -1,120 +1,120 @@
-/* Define colors */
-:root {
-  --primary-color: #3498db; /* Blue */
-  --secondary-color: #2ecc71; /* Green */
-  --text-color: #333; /* Dark Gray */
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Use a nice font */
-  margin: 0;
-  padding: 0;
-}
-
+/* General Layout */
 .container {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: flex-start;
-  height: 95vh;
-  max-width: 95vw;
-  margin: auto;
-  text-align: center;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 .content {
-  width: 90%;
-  max-width: 800px;
-  background-color: #fff; /* White */
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
-  margin:auto;
+  margin-bottom: 40px;
 }
 
-.table-container {
-  margin-top: 20px;
-  max-height: 200px;
-  overflow-y: auto;
+h1, h2, h3 {
+  color: #2d2d2d;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Forecast and Actual Intensity */
+p {
+  font-size: 1.2rem;
+  margin: 10px 0;
 }
 
 table {
+  width: 100%;
   border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: sans-serif;
-  min-width: 350px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  margin:auto;
-  padding: 30em;
+  margin-top: 20px;
 }
 
-thead tr {
-  background-color: #009879;
-  color: #ffffff;
-  text-align: left;
+table th,
+table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ccc;
 }
 
-th,
-td {
-  padding: 12px 15px;
+table th {
+  background-color: #f4f4f4;
+  color: #333;
 }
 
-tbody tr {
-  border-bottom: 1px solid #dddddd;
+table td {
+  font-size: 1.1rem;
 }
 
-tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
+/* Region Dropdown */
+select {
+  padding: 10px;
+  font-size: 1.1rem;
+  margin-top: 20px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;
+  max-width: 250px;
 }
 
-tbody tr:last-of-type {
-  border-bottom: 2px solid #009879;
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Region Data Section */
+.inline-headings-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.inline-headings-container h3 {
+  margin: 0;
+}
+
+.side-panel {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 ul {
-  padding-left: 0; /* Remove default padding */
   list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Style links */
+li {
+  padding: 5px 0;
+}
+
+li span {
+  font-weight: bold;
+}
+
+/* Links */
 a {
-  color: var(--primary-color);
+  display: inline-block;
+  margin-top: 20px;
+  color: #007bff;
+  font-size: 1.1rem;
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
-}
-
-/* Side panel */
-.side-panel {
-  display: inline-flex; /* Use flexbox to arrange items */
-  flex-direction: row; /* Arrange items vertically */
-  padding: 10px 50px 20px;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.inline-headings-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 16px;
-}
-
-/* Style for individual heading elements */
-.inline-headings-container h3 {
-  margin-right: 20px; /* Add some spacing between headings */
-}
-
-.dropdown{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: fit-content;
 }

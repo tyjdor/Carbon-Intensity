@@ -1,91 +1,181 @@
-/* RegionDetail.css */
+/* General Layout */
 body {
-    background-color: #f0f7ff; /* Nice blue background */
-}
-
-.region-detail-container {
+    background-color: #f0f7ff; /* Soft blue background */
+    font-family: Arial, sans-serif; /* Cleaner font */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .region-detail-container {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 30px auto;
     padding: 20px;
-    text-align: center;
     background-color: #fff; /* White background for the container */
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
-}
-
-.region-detail-container h2 {
+  }
+  
+  h2, h3 {
     color: #333;
-    text-align: center; /* Center the header */
-}
-
-.region-detail-container h3 {
-    color: #555;
-}
-
-.region-detail-container p {
+  }
+  
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
     margin-bottom: 10px;
-}
-
-.region-detail-container ul {
+  }
+  
+  p {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+  }
+  
+  ul {
     list-style: none;
     padding-left: 0;
-}
-
-.region-detail-container li {
-    margin-bottom: 5px;
-}
-
-.region-detail-container .date-container {
+  }
+  
+  li {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+  }
+  
+  .date-container {
     margin-bottom: 20px;
-}
-
-.region-detail-container .date-picker {
+  }
+  
+  .date-picker {
     margin-right: 10px;
-}
-
-.region-detail-container .intensity-list {
-    max-height: 200px;
+    padding: 8px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  .intensity-list {
+    max-height: 300px;
     overflow-y: auto;
-}
-
-.region-detail-container .intensity-list table {
+    margin-top: 20px;
+  }
+  
+  .intensity-list table {
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid #ddd;
-}
-
-.region-detail-container .intensity-list th,
-.region-detail-container .intensity-list td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.region-detail-container .intensity-list th {
-    background-color: #f2f2f2;
-}
-
-.daily-intensities {
     margin-top: 20px;
-    overflow: auto; /* Enable scrolling for overflow */
-}
-
-/* Positioning "Regional Data" and "Generation Mix" next to each other */
-.region-detail-container .data-heading {
+  }
+  
+  .intensity-list th,
+  .intensity-list td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    font-size: 1.1rem;
+  }
+  
+  .intensity-list th {
+    background-color: #f4f4f4;
+  }
+  
+  .daily-intensities {
+    margin-top: 30px;
+    overflow: auto;
+  }
+  
+  /* Flexbox for Inline Elements */
+  .data-heading {
     display: flex;
     justify-content: space-between;
-}
-
-.region-detail-container .regional-data,
-.generation-mix {
-    
-    margin: 0 auto;
-    text-align: center;
-    width: calc(50% - 5px); /* Adjust width as needed */
-}
-.dropdown{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
+    align-items: center;
+    margin-top: 30px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
   }
+  
+  .regional-data,
+  .generation-mix {
+    width: calc(50% - 10px); /* Ensures both fit side by side with spacing */
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Light background for sections */
+  }
+  
+  .regional-data,
+  .generation-mix {
+    text-align: left;
+  }
+  
+  .regional-data span,
+  .generation-mix span {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .regional-data ul,
+  .generation-mix ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .regional-data li,
+  .generation-mix li {
+    margin-bottom: 8px;
+  }
+  
+  .regional-data .fuel-list,
+  .generation-mix .fuel-list {
+    display: flex;
+    flex-wrap: wrap; /* Items will wrap on smaller screens */
+    gap: 15px;
+  }
+  
+  .regional-data .fuel-item,
+  .generation-mix .fuel-item {
+    width: 100%; /* Fuel items take full width by default */
+    font-size: 1.1rem;
+  }
+  
+  .regional-data .fuel-item span,
+  .generation-mix .fuel-item span {
+    font-weight: bold;
+  }
+  
+  /* Dropdown Style */
+  .dropdown {
+    display: block;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  select {
+    padding: 12px;
+    font-size: 1.1rem;
+    margin-top: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 100%;
+  }
+  
+  select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Links */
+  a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007bff;
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
