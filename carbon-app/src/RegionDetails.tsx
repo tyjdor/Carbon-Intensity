@@ -60,43 +60,68 @@ const RegionDetails = () => {
   const renderDailyIntensities = () => {
     const dailyIntensities = calculateDailyIntensities();
     if (!dailyIntensities) return null;
-    return (
-      //Object.entries(dailyIntensities).map(
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Intensity (gCO2/kWh) </th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(dailyIntensities).map(
-            ([date, intensities], index) => (
-              <tr key={index}>
-                <td>{date}</td>
-                <td>
-                  <ul>
-                    {intensities.map((intensity, subIndex) => (
-                      <li key={subIndex}>{intensity}</li>
-                    ))}
-                  </ul>
-                </td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
 
-      //   ([date, intensities], index) => (
-      //     <div key={index}>
-      //       <p>{date}:</p>
-      //       <ul>
-      //         {intensities.map((intensity, subIndex) => (
-      //           <li key={subIndex}>{intensity} gCO2/kWh</li>
-      //         ))}
-      //       </ul>
-      //     </div>
-      // )
+    const formatNumber = (number: number) => {
+      return number.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    };
+
+    return (
+      <div style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th
+                style={{
+                  textAlign: "left",
+                  padding: "10px",
+                  borderBottom: "2px solid #ddd",
+                }}
+              >
+                Date
+              </th>
+              <th
+                style={{
+                  textAlign: "left",
+                  padding: "10px",
+                  borderBottom: "2px solid #ddd",
+                }}
+              >
+                Intensity (gCO2/kWh) per Half Hour
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(dailyIntensities).map(
+              ([date, intensities], index) => (
+                <tr key={index}>
+                  <td
+                    style={{ padding: "10px", borderBottom: "1px solid #ddd" }}
+                  >
+                    {date}
+                  </td>
+                  <td
+                    style={{ padding: "10px", borderBottom: "1px solid #ddd" }}
+                  >
+                    <ul style={{ paddingLeft: "20px", margin: 0 }}>
+                      {intensities.map((intensity, subIndex) => (
+                        <li
+                          key={subIndex}
+                          style={{ fontSize: "1rem", color: "#333" }}
+                        >
+                          {formatNumber(intensity)} gCO2/kWh
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
