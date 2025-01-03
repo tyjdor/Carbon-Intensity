@@ -2,22 +2,24 @@ export const getRegionalIntensityTimeRange = async (
   id: number,
   timeStart: Date,
   timeEnd: Date
-) => {
+): Promise<any | null> => {
   try {
-    const formattedPastDate = timeStart.toISOString().substring(0, 16) + "Z";
-    const formattedCurrentDate = timeEnd.toISOString().substring(0, 16) + "Z";
+    // Convert dates to ISO strings (UTC format)
+    const startISO = timeStart.toISOString().slice(0, 16);
+    const endISO = timeEnd.toISOString().slice(0, 16);
 
-    const response = await fetch(
-      `https://api.carbonintensity.org.uk/regional/intensity/${formattedPastDate}/${formattedCurrentDate}/regionid/${id}`
-    );
+    const url = `https://api.carbonintensity.org.uk/regional/intensity/${startISO}/${endISO}/regionid/${id}`;
+
+    const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`Failed to fetch past weeks carbon intensity data`);
+      throw new Error(
+        `Failed to fetch regional carbon intensity data: ${response.status} ${response.statusText}`
+      );
     }
-    const data = await response.json();
 
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error("error fetching past weeks carbon intensity data:", error);
+    console.error("Error fetching regional carbon intensity data:", error);
     return null;
   }
 };
